@@ -1,18 +1,26 @@
 package com.example.demo.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.demo.entity.UserAccount;
+import com.example.demo.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-public class HomeController {
+@RequestMapping("/users")
+@RequiredArgsConstructor
+public class UserController {
 
-    @GetMapping("/")
-    public String home() {
-        return "Public endpoint";
+    private final UserRepository repo;
+
+    @GetMapping
+    public List<UserAccount> getAll() {
+        return repo.findAll();
     }
 
-    @GetMapping("/secure")
-    public String secure() {
-        return "Bạn đã đăng nhập thành công 🎉";
+    @PostMapping
+    public UserAccount create(@RequestBody UserAccount user) {
+        return repo.save(user);
     }
 }
